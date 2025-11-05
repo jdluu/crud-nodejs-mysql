@@ -2,7 +2,7 @@
 
 A full-featured CRUD (Create, Read, Update, Delete) application built with Node.js and SQLite, featuring user authentication, soft delete, versioning, and comprehensive activity logging.
 
-**Note:** This is an enhanced version of the original project. The original repository can be found at: [https://github.com/TadeopCreator/crud-nodejs-mysql](https://github.com/TadeopCreator/crud-nodejs-mysql)
+**Note:** This is an enhanced version of the original project, developed as part of a software re-engineering class. The original repository can be found at: [https://github.com/TadeopCreator/crud-nodejs-mysql](https://github.com/TadeopCreator/crud-nodejs-mysql)
 
 ---
 
