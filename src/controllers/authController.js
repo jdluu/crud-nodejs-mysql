@@ -1,4 +1,5 @@
 const { logActivity } = require('../utils/activityLogger');
+const bcrypt = require('bcrypt');
 
 const authController = {};
 
@@ -16,29 +17,44 @@ authController.login = (req, res) => {
 
     req.getConnection((err, conn) => {
         if (err) {
+            console.error('Database connection error:', err);
             return res.render('login', { error: 'Database connection error' });
         }
 
         conn.query(
-            'SELECT * FROM users WHERE username = ? AND password = ?',
-            [username, password],
+            'SELECT * FROM users WHERE username = ?',
+            [username],
             (err, users) => {
                 if (err) {
-                    return res.render('login', { error: 'Database error occurred' });
+                    console.error('Database query error:', err);
+                    return res.render('login', { error: 'Database error occurred: ' + err.message });
                 }
 
-                if (users.length === 0) {
+                if (!users || users.length === 0) {
                     return res.render('login', { error: 'Invalid username or password' });
                 }
 
                 const user = users[0];
-                req.session.userId = user.id;
-                req.session.username = user.username;
+                
+                // Compare password with bcrypt
+                bcrypt.compare(password, user.password, (bcryptErr, isMatch) => {
+                    if (bcryptErr) {
+                        console.error('Bcrypt error:', bcryptErr);
+                        return res.render('login', { error: 'Authentication error occurred' });
+                    }
 
-                // Log login activity
-                logActivity(req, 'LOGIN', `User ${username} logged in`, 'users', user.id);
+                    if (!isMatch) {
+                        return res.render('login', { error: 'Invalid username or password' });
+                    }
 
-                res.redirect('/');
+                    req.session.userId = user.id;
+                    req.session.username = user.username;
+
+                    // Log login activity
+                    logActivity(req, 'LOGIN', `User ${username} logged in`, 'users', user.id);
+
+                    res.redirect('/');
+                });
             }
         );
     });
