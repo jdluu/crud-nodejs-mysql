@@ -4,6 +4,11 @@
 # Node modules
 node_modules/
 
+# Database files (SQLite)
+*.db
+*.db-shm
+*.db-wal
+
 # Logs
 logs
 *.log
@@ -29,3 +34,6 @@ build/
 # Temporary files
 *.tmp
 .cache/
+
+# Test screenshots
+test-*.png
