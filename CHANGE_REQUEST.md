@@ -3,8 +3,8 @@
 ## Change Request Information
 
 **Change Request ID:** CR-001  
-**Date Submitted:** 2025-01-XX  
-**Submitted By:** [Your Name]  
+**Date Submitted:** 2025-11-04  
+**Submitted By:** Jeffrey Luu  
 **Priority:** High  
 **Status:** Completed  
 
