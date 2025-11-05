@@ -36,9 +36,11 @@ async function startServer() {
 
     serverProcess.stdout.on('data', (data) => {
       const output = data.toString();
+      console.log(output); // Log all output for debugging
       if (output.includes('Server on port')) {
         console.log('✓ Server started');
-        setTimeout(resolve, 2000); // Wait 2 seconds for server to fully initialize
+        // Wait longer for database initialization
+        setTimeout(resolve, 3000); // Wait 3 seconds for database to fully initialize
       }
     });
 
@@ -136,12 +138,13 @@ async function testCreateCustomer() {
     await page.type('input[name="phone"]', '555-1234');
     
     await Promise.all([
-      page.waitForNavigation({ waitUntil: 'networkidle0' }),
+      page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 10000 }),
       page.click('button[type="submit"]')
     ]);
     
-    // Wait for page to load
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Wait for page to load and table to appear
+    await page.waitForSelector('table', { timeout: 5000 });
+    await new Promise(resolve => setTimeout(resolve, 500));
     
     // Check if customer appears in table
     const content = await page.content();
@@ -162,110 +165,242 @@ async function testCreateCustomer() {
 
 async function testUpdateCustomer() {
   console.log('\n[TEST] Testing update customer...');
-  // Find and click update button for first customer
-  const updateButtons = await page.$$('a.btn-info');
-  if (updateButtons.length > 0) {
-    await updateButtons[0].click();
-    await page.waitForSelector('input[name="name"]', { timeout: 5000 });
+  try {
+    // Ensure we're on the main customers page
+    await page.goto(BASE_URL, { waitUntil: 'networkidle0' });
+    await page.waitForSelector('table', { timeout: 5000 });
     
-    // Update the name
-    await page.evaluate(() => {
-      document.querySelector('input[name="name"]').value = '';
-    });
-    await page.type('input[name="name"]', 'Updated Customer');
-    await page.click('button[type="submit"]');
+    // Wait a bit for page to fully load
+    await new Promise(resolve => setTimeout(resolve, 500));
     
-    await page.waitForNavigation({ waitUntil: 'networkidle0' });
-    const content = await page.content();
-    if (content.includes('Updated Customer')) {
-      console.log('✓ Customer updated successfully');
-      return true;
+    // Find update button - look for link with href="/update/" pattern
+    const updateButtons = await page.$$('a[href^="/update/"]');
+    if (updateButtons.length > 0) {
+      // Wait for navigation after clicking update
+      await Promise.all([
+        page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 10000 }),
+        updateButtons[0].click()
+      ]);
+      
+      await page.waitForSelector('input[name="name"]', { timeout: 5000 });
+      
+      // Update the name - clear first, then type
+      await page.click('input[name="name"]', { clickCount: 3 }); // Select all
+      await page.type('input[name="name"]', 'Updated Customer');
+      
+      // Submit form and wait for navigation
+      const navigationPromise = page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 10000 });
+      await page.click('button[type="submit"]');
+      await navigationPromise.catch(() => {
+        // If navigation promise fails, check if we're already on the right page
+        return page.waitForSelector('table', { timeout: 2000 }).catch(() => {});
+      });
+      
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Wait a bit more
+      
+      const content = await page.content();
+      if (content.includes('Updated Customer')) {
+        console.log('✓ Customer updated successfully');
+        return true;
+      } else {
+        console.log('✗ Customer update failed');
+        await page.screenshot({ path: 'test-update-error.png' });
+        return false;
+      }
     } else {
-      console.log('✗ Customer update failed');
+      console.log('✗ No customers found to update');
       return false;
     }
-  } else {
-    console.log('✗ No customers found to update');
+  } catch (error) {
+    console.log('✗ Update customer failed:', error.message);
+    await page.screenshot({ path: 'test-update-error.png' });
     return false;
   }
 }
 
 async function testDeleteCustomer() {
   console.log('\n[TEST] Testing soft delete...');
-  // Find and click delete button for first customer
-  const deleteButtons = await page.$$('a.btn-danger');
-  if (deleteButtons.length > 0) {
-    // Handle confirm dialog
-    page.on('dialog', async dialog => {
-      await dialog.accept();
-    });
+  try {
+    // Ensure we're on the main customers page
+    await page.goto(BASE_URL, { waitUntil: 'networkidle0' });
+    await page.waitForSelector('table', { timeout: 5000 });
+    await new Promise(resolve => setTimeout(resolve, 500));
     
-    await deleteButtons[0].click();
-    await page.waitForNavigation({ waitUntil: 'networkidle0' });
-    console.log('✓ Customer soft deleted successfully');
-    return true;
-  } else {
-    console.log('✗ No customers found to delete');
+    // Find and click delete button for first customer
+    const deleteButtons = await page.$$('a.btn-danger');
+    if (deleteButtons.length > 0) {
+      // Get the customer name before deleting for verification
+      const customerName = await page.evaluate(() => {
+        const firstRow = document.querySelector('table tbody tr');
+        if (firstRow) {
+          const nameCell = firstRow.querySelector('td:nth-child(2)');
+          return nameCell ? nameCell.textContent.trim() : null;
+        }
+        return null;
+      });
+      
+      if (!customerName) {
+        console.log('✗ Could not find customer name');
+        return false;
+      }
+      
+      // Handle confirm dialog
+      page.on('dialog', async dialog => {
+        await dialog.accept();
+      });
+      
+      await Promise.all([
+        page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 10000 }),
+        deleteButtons[0].click()
+      ]);
+      
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Verify the customer is no longer in the active list
+      const activeContent = await page.content();
+      if (activeContent.includes(customerName)) {
+        console.log('✗ Customer still appears in active list after deletion');
+        return false;
+      }
+      
+      console.log('✓ Customer soft deleted successfully');
+      return { success: true, customerName };
+    } else {
+      console.log('✗ No customers found to delete');
+      return false;
+    }
+  } catch (error) {
+    console.log('✗ Delete customer failed:', error.message);
+    await page.screenshot({ path: 'test-delete-error.png' });
     return false;
   }
 }
 
 async function testViewDeletedCustomers() {
   console.log('\n[TEST] Testing view deleted customers...');
-  const deletedLink = await page.$('a[href="/deleted"]');
-  if (deletedLink) {
-    await deletedLink.click();
-    await page.waitForSelector('table', { timeout: 5000 });
-    const content = await page.content();
-    if (content.includes('Deleted Customers')) {
-      console.log('✓ Deleted customers page loaded');
-      return true;
+  try {
+    // Navigate back to main page first to find the link
+    await page.goto(BASE_URL, { waitUntil: 'networkidle0' });
+    await page.waitForSelector('a[href="/deleted"]', { timeout: 5000 });
+    const deletedLink = await page.$('a[href="/deleted"]');
+    if (deletedLink) {
+      await Promise.all([
+        page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 10000 }),
+        deletedLink.click()
+      ]);
+      await page.waitForSelector('table', { timeout: 5000 });
+      const content = await page.content();
+      if (content.includes('Deleted Customers')) {
+        console.log('✓ Deleted customers page loaded');
+        return true;
+      } else {
+        console.log('✗ Deleted customers page failed');
+        return false;
+      }
     } else {
-      console.log('✗ Deleted customers page failed');
+      console.log('✗ Deleted customers link not found');
       return false;
     }
-  } else {
-    console.log('✗ Deleted customers link not found');
+  } catch (error) {
+    console.log('✗ View deleted customers failed:', error.message);
+    await page.screenshot({ path: 'test-deleted-error.png' });
+    return false;
+  }
+}
+
+async function testVerifyDeletedItemAppears() {
+  console.log('\n[TEST] Verifying deleted item appears in deleted items list...');
+  try {
+    // Navigate to deleted customers page
+    await page.goto(`${BASE_URL}/deleted`, { waitUntil: 'networkidle0' });
+    await page.waitForSelector('table', { timeout: 5000 });
+    
+    // Check if "Updated Customer" or "Test Customer" appears in the deleted list
+    const content = await page.content();
+    const pageText = await page.evaluate(() => document.body.textContent);
+    
+    // More specific check - look for the customer name in the table body
+    const hasDeletedCustomer = await page.evaluate(() => {
+      const tableRows = Array.from(document.querySelectorAll('table tbody tr'));
+      const rowTexts = tableRows.map(row => row.textContent);
+      return rowTexts.some(text => 
+        text.includes('Updated Customer') || 
+        text.includes('Test Customer')
+      );
+    });
+    
+    if (hasDeletedCustomer) {
+      console.log('✓ Deleted customer appears in deleted items list');
+      return true;
+    } else {
+      console.log('✗ Deleted customer not found in deleted items list');
+      console.log('Page content preview:', pageText.substring(0, 500));
+      await page.screenshot({ path: 'test-deleted-verification-error.png' });
+      return false;
+    }
+  } catch (error) {
+    console.log('✗ Verify deleted item failed:', error.message);
+    await page.screenshot({ path: 'test-deleted-verification-error.png' });
     return false;
   }
 }
 
 async function testViewActivityLog() {
   console.log('\n[TEST] Testing view activity log...');
-  const activityLink = await page.$('a[href="/activity-log"]');
-  if (activityLink) {
-    await activityLink.click();
-    await page.waitForSelector('table', { timeout: 5000 });
-    const content = await page.content();
-    if (content.includes('Activity Log')) {
-      console.log('✓ Activity log page loaded');
-      return true;
+  try {
+    await page.waitForSelector('a[href="/activity-log"]', { timeout: 5000 });
+    const activityLink = await page.$('a[href="/activity-log"]');
+    if (activityLink) {
+      await Promise.all([
+        page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 10000 }),
+        activityLink.click()
+      ]);
+      await page.waitForSelector('table', { timeout: 5000 });
+      const content = await page.content();
+      if (content.includes('Activity Log')) {
+        console.log('✓ Activity log page loaded');
+        return true;
+      } else {
+        console.log('✗ Activity log page failed');
+        return false;
+      }
     } else {
-      console.log('✗ Activity log page failed');
+      console.log('✗ Activity log link not found');
       return false;
     }
-  } else {
-    console.log('✗ Activity log link not found');
+  } catch (error) {
+    console.log('✗ View activity log failed:', error.message);
+    await page.screenshot({ path: 'test-activity-error.png' });
     return false;
   }
 }
 
 async function testLogout() {
   console.log('\n[TEST] Testing logout...');
-  const logoutLink = await page.$('a[href="/logout"]');
-  if (logoutLink) {
-    await logoutLink.click();
-    await page.waitForSelector('input[name="username"]', { timeout: 5000 });
-    const url = page.url();
-    if (url.includes('/login')) {
-      console.log('✓ Logout successful');
-      return true;
+  try {
+    await page.waitForSelector('a[href="/logout"]', { timeout: 5000 });
+    const logoutLink = await page.$('a[href="/logout"]');
+    if (logoutLink) {
+      await Promise.all([
+        page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 10000 }),
+        logoutLink.click()
+      ]);
+      await page.waitForSelector('input[name="username"]', { timeout: 5000 });
+      const url = page.url();
+      if (url.includes('/login')) {
+        console.log('✓ Logout successful');
+        return true;
+      } else {
+        console.log('✗ Logout failed');
+        return false;
+      }
     } else {
-      console.log('✗ Logout failed');
+      console.log('✗ Logout link not found');
       return false;
     }
-  } else {
-    console.log('✗ Logout link not found');
+  } catch (error) {
+    console.log('✗ Logout failed:', error.message);
+    await page.screenshot({ path: 'test-logout-error.png' });
     return false;
   }
 }
@@ -360,7 +495,17 @@ async function runTests() {
     result ? results.passed++ : results.failed++;
 
     result = await testDeleteCustomer();
-    results.tests.push({ name: 'Delete Customer', passed: result, skipped: false });
+    const deleteResult = result;
+    results.tests.push({ name: 'Delete Customer', passed: deleteResult && (deleteResult.success || deleteResult === true), skipped: false });
+    if (deleteResult && (deleteResult.success || deleteResult === true)) {
+      results.passed++;
+    } else {
+      results.failed++;
+    }
+
+    // Verify deleted item appears in deleted items list
+    result = await testVerifyDeletedItemAppears();
+    results.tests.push({ name: 'Verify Deleted Item Appears', passed: result, skipped: false });
     result ? results.passed++ : results.failed++;
 
     result = await testViewDeletedCustomers();
