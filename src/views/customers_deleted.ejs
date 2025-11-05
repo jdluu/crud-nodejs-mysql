@@ -1,0 +1,56 @@
+<%- include('partials/_header'); -%>
+
+<h1 class="ml-2">
+  Deleted Customers
+  <% if (username) { %>
+    <span class="badge badge-secondary ml-2">Welcome, <%= username %></span>
+    <a href="/logout" class="btn btn-sm btn-outline-light ml-2">Logout</a>
+  <% } %>
+</h1>
+<div class="container">
+<div class="row mt-5">
+    <div class="col-md-12 mb-3">
+        <a href="/" class="btn btn-primary">Back to Active Customers</a>
+        <a href="/activity-log" class="btn btn-info">View Activity Log</a>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-md-12">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Deleted At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (data && data.length > 0) { %>
+                    <% for (var i = 0; i < data.length; i++) { %>
+                        <tr>
+                            <td><%= (i + 1) %></td>
+                            <td><%= data[i].name %></td>
+                            <td><%= data[i].address %></td>
+                            <td><%= data[i].phone %></td>
+                            <td><%= data[i].deleted_at ? new Date(data[i].deleted_at).toLocaleString() : 'N/A' %></td>
+                            <td>
+                                <a href="/restore/<%= data[i].id %>" class="btn btn-success btn-sm" onclick="return confirm('Are you sure you want to restore this customer?')">Restore</a>
+                                <a href="/versions/<%= data[i].id %>" class="btn btn-secondary btn-sm">View History</a>
+                            </td>
+                        </tr>
+                    <% } %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="6" class="text-center">No deleted customers found.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+<%- include('partials/_footer'); -%>
+

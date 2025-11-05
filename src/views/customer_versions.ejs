@@ -1,0 +1,70 @@
+<%- include('partials/_header'); -%>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12 mb-3">
+            <% if (username) { %>
+                <span class="badge badge-secondary">Welcome, <%= username %></span>
+                <a href="/logout" class="btn btn-sm btn-outline-secondary ml-2">Logout</a>
+            <% } %>
+            <a href="/" class="btn btn-sm btn-secondary ml-2">Back to Customers</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Version History for: <%= customer.name %></h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>Current Customer Information:</strong></p>
+                    <ul>
+                        <li><strong>Name:</strong> <%= customer.name %></li>
+                        <li><strong>Address:</strong> <%= customer.address %></li>
+                        <li><strong>Phone:</strong> <%= customer.phone %></li>
+                        <li><strong>Created:</strong> <%= customer.created_at ? new Date(customer.created_at).toLocaleString() : 'N/A' %></li>
+                        <li><strong>Last Updated:</strong> <%= customer.updated_at ? new Date(customer.updated_at).toLocaleString() : 'N/A' %></li>
+                        <% if (customer.deleted_at) { %>
+                            <li><strong>Deleted:</strong> <%= new Date(customer.deleted_at).toLocaleString() %></li>
+                        <% } %>
+                    </ul>
+                    
+                    <hr>
+                    
+                    <h5>Version History:</h5>
+                    <% if (versions && versions.length > 0) { %>
+                        <table class="table table-bordered table-hover mt-3">
+                            <thead>
+                                <tr>
+                                    <th>Version #</th>
+                                    <th>Name</th>
+                                    <th>Address</th>
+                                    <th>Phone</th>
+                                    <th>Changed By</th>
+                                    <th>Changed At</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (var i = 0; i < versions.length; i++) { %>
+                                    <tr>
+                                        <td><%= versions[i].version_number %></td>
+                                        <td><%= versions[i].name %></td>
+                                        <td><%= versions[i].address %></td>
+                                        <td><%= versions[i].phone %></td>
+                                        <td><%= versions[i].changed_by_username || 'System' %></td>
+                                        <td><%= new Date(versions[i].changed_at).toLocaleString() %></td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    <% } else { %>
+                        <p class="text-muted">No version history available for this customer.</p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/_footer'); -%>
+

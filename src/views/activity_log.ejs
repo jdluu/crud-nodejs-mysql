@@ -1,0 +1,69 @@
+<%- include('partials/_header'); -%>
+
+<h1 class="ml-2">
+  Activity Log
+  <% if (username) { %>
+    <span class="badge badge-secondary ml-2">Welcome, <%= username %></span>
+    <a href="/logout" class="btn btn-sm btn-outline-light ml-2">Logout</a>
+  <% } %>
+</h1>
+<div class="container">
+<div class="row mt-5">
+    <div class="col-md-12 mb-3">
+        <a href="/" class="btn btn-primary">Back to Customers</a>
+        <a href="/deleted" class="btn btn-warning">View Deleted Customers</a>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-md-12">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Timestamp</th>
+                    <th>User</th>
+                    <th>Activity Type</th>
+                    <th>Description</th>
+                    <th>Table</th>
+                    <th>Record ID</th>
+                    <th>IP Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (activities && activities.length > 0) { %>
+                    <% for (var i = 0; i < activities.length; i++) { %>
+                        <tr>
+                            <td><%= (i + 1) %></td>
+                            <td><%= new Date(activities[i].created_at).toLocaleString() %></td>
+                            <td><%= activities[i].username || 'Anonymous' %></td>
+                            <td>
+                                <% 
+                                    const activityType = activities[i].activity_type;
+                                    let badgeClass = 'badge-secondary';
+                                    if (activityType === 'LOGIN') badgeClass = 'badge-success';
+                                    else if (activityType === 'LOGOUT') badgeClass = 'badge-info';
+                                    else if (activityType === 'CREATE') badgeClass = 'badge-primary';
+                                    else if (activityType === 'UPDATE') badgeClass = 'badge-warning';
+                                    else if (activityType === 'DELETE') badgeClass = 'badge-danger';
+                                    else if (activityType === 'RESTORE') badgeClass = 'badge-success';
+                                %>
+                                <span class="badge <%= badgeClass %>"><%= activityType %></span>
+                            </td>
+                            <td><%= activities[i].activity_description %></td>
+                            <td><%= activities[i].table_name || 'N/A' %></td>
+                            <td><%= activities[i].record_id || 'N/A' %></td>
+                            <td><%= activities[i].ip_address || 'N/A' %></td>
+                        </tr>
+                    <% } %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="8" class="text-center">No activity logs found.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+<%- include('partials/_footer'); -%>
+

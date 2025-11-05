@@ -2,22 +2,38 @@
 
 <div class="container mt-5">
     <div class="row">
+        <div class="col-md-12 mb-3">
+            <% if (username) { %>
+                <span class="badge badge-secondary">Welcome, <%= username %></span>
+                <a href="/logout" class="btn btn-sm btn-outline-secondary ml-2">Logout</a>
+            <% } %>
+            <a href="/" class="btn btn-sm btn-secondary ml-2">Back to Customers</a>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-5">
             <div class="card">
+                <div class="card-header">
+                    <h5>Update Customer</h5>
+                </div>
                 <div class="card-body">
                     <form action="/update/<%= data.id %>" method="post">
                         <div class="form-group">
-                            <input type="text" name="name" value="<%= data.name %>" class="form-control" >
+                            <label for="name">Name</label>
+                            <input type="text" name="name" id="name" value="<%= data.name %>" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" name="address" value="<%= data.address %>" class="form-control" >
+                            <label for="address">Address</label>
+                            <input type="text" name="address" id="address" value="<%= data.address %>" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" name="phone" value="<%= data.phone %>" class="form-control" >
+                            <label for="phone">Phone</label>
+                            <input type="text" name="phone" id="phone" value="<%= data.phone %>" class="form-control" required>
                         </div>
                         <button type="submit" class="btn btn-primary">
                             Update Customer
                         </button>
+                        <a href="/versions/<%= data.id %>" class="btn btn-secondary">View Version History</a>
                     </form>
                 </div>
             </div>
