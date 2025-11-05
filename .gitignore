@@ -29,4 +29,3 @@ build/
 # Temporary files
 *.tmp
 .cache/
-node_modules/
