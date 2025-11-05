@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/app.js",
+    "test": "node test/browser-test.js"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,7 @@
     "mysql": "^2.18.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "puppeteer": "^24.28.0"
   }
 }
