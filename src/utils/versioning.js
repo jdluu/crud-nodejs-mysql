@@ -16,7 +16,7 @@ const createVersion = (req, customerId, customerData) => {
                     return;
                 }
 
-                const nextVersion = (result[0].max_version || 0) + 1;
+                const nextVersion = (result[0]?.max_version || 0) + 1;
                 const userId = req.session ? req.session.userId : null;
 
                 const versionData = {
@@ -28,7 +28,13 @@ const createVersion = (req, customerId, customerData) => {
                     changed_by: userId
                 };
 
-                conn.query('INSERT INTO customer_versions SET ?', [versionData], (err) => {
+                // SQLite INSERT syntax
+                const keys = Object.keys(versionData);
+                const values = Object.values(versionData);
+                const placeholders = keys.map(() => '?').join(', ');
+                const sql = `INSERT INTO customer_versions (${keys.join(', ')}) VALUES (${placeholders})`;
+
+                conn.query(sql, values, (err) => {
                     if (err) {
                         console.error('Error creating version:', err);
                     }

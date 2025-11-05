@@ -24,7 +24,13 @@ const logActivity = (req, activityType, description, tableName = null, recordId 
             user_agent: userAgent
         };
 
-        conn.query('INSERT INTO activity_log SET ?', [logData], (err) => {
+        // SQLite INSERT syntax
+        const keys = Object.keys(logData);
+        const values = Object.values(logData);
+        const placeholders = keys.map(() => '?').join(', ');
+        const sql = `INSERT INTO activity_log (${keys.join(', ')}) VALUES (${placeholders})`;
+
+        conn.query(sql, values, (err) => {
             if (err) {
                 console.error('Error logging activity:', err);
             }

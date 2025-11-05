@@ -134,7 +134,7 @@ controller.delete = (req, res) => {
             }
 
             // Soft delete: set deleted_at timestamp
-            conn.query('UPDATE customer SET deleted_at = NOW() WHERE id = ?', [id], (err, rows) => {
+            conn.query('UPDATE customer SET deleted_at = datetime(\'now\') WHERE id = ?', [id], (err, rows) => {
                 if (err) {
                     res.json(err);
                     return;
