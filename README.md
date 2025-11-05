@@ -1,6 +1,6 @@
-# Node.js MySQL CRUD Application
+# Node.js CRUD Application
 
-A CRUD (Create, Read, Update, Delete) application developed using Node.js and MySQL, showcasing database management and API development skills.
+A full-featured CRUD (Create, Read, Update, Delete) application built with Node.js and SQLite, featuring user authentication, soft delete, versioning, and comprehensive activity logging.
 
 **Note:** This is an enhanced version of the original project. The original repository can be found at: [https://github.com/TadeopCreator/crud-nodejs-mysql](https://github.com/TadeopCreator/crud-nodejs-mysql)
 
@@ -10,126 +10,102 @@ A CRUD (Create, Read, Update, Delete) application developed using Node.js and My
 
 - [Description](#description)
 - [Key Features](#key-features)
-- [New Enhancements](#new-enhancements)
+- [Technology Stack](#technology-stack)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Testing](#testing)
 - [API Endpoints](#api-endpoints)
 - [Database Schema](#database-schema)
+- [Project Structure](#project-structure)
 - [License](#license)
 
 ---
 
 ## Description
 
-The Node.js MySQL CRUD Application is a dynamic and versatile project that demonstrates a proficient combination of Node.js and MySQL, highlighting the developer's prowess in database management and API development. This project offers a comprehensive solution for performing CRUD (Create, Read, Update, Delete) operations on a database, providing a solid foundation for building robust web applications.
+This CRUD application demonstrates modern Node.js development practices with a focus on data integrity, security, and audit trails. Built with Express.js and SQLite, it provides a solid foundation for building production-ready web applications with features essential for banking systems, social media platforms, and other applications where data retention and audit trails are crucial.
 
-This enhanced version includes advanced features such as soft delete, versioning, activity logging, and user authentication - essential features for production applications in banking systems, social media platforms, and other critical applications where data retention and audit trails are crucial.
+The application automatically initializes the database on first startup, making setup seamless and straightforward.
 
 ---
 
 ## Key Features
 
-- **CRUD Operations:** This project encompasses all four essential database operations - Create, Read, Update, and Delete. Users can seamlessly interact with the database through a user-friendly interface.
+### Core CRUD Operations
+- **Create:** Add new customer records with validation
+- **Read:** View active customers with pagination support
+- **Update:** Modify customer information with version tracking
+- **Delete:** Soft delete functionality for data retention
 
-- **Node.js:** Powered by Node.js, this application leverages the asynchronous, event-driven architecture of Node.js for efficient and responsive server-side operations. Node.js enables real-time updates and a high level of scalability.
+### Advanced Features
 
-- **MySQL Database:** The application is deeply integrated with MySQL, a powerful and widely-used relational database management system. It showcases effective data storage, retrieval, and management techniques.
-
-- **API Development:** The project exposes a set of well-documented APIs, enabling developers to interact programmatically with the underlying database. This makes it suitable for building both web and mobile applications that require data manipulation.
-
-- **User-Friendly Interface:** The project includes an intuitive user interface that allows users to easily create, read, update, and delete records within the database. This interface serves as an excellent reference for frontend development.
-
-- **Scalable and Maintainable:** Designed with scalability and maintainability in mind, the project follows best practices for code organization and separation of concerns, making it adaptable to the evolving needs of your application.
-
-- **Open Source:** This GitHub project is open-source, providing a valuable resource for developers to learn, explore, and contribute to the world of Node.js and MySQL application development.
+- **User Authentication:** Secure login/logout with bcrypt password hashing and session management
+- **Soft Delete:** Deleted records are retained with a `deleted_at` timestamp for compliance and recovery
+- **Versioning:** Complete audit trail of all changes to customer records
+- **Activity Logging:** Comprehensive logging of all user activities including IP address, user agent, and timestamps
+- **Restore Functionality:** Ability to restore soft-deleted records
+- **Browser Automation Testing:** Automated testing suite using Puppeteer
 
 ---
 
-## New Enhancements
+## Technology Stack
 
-This enhanced version includes the following new features:
-
-### 1. **Soft Delete** (Data Retention)
-- Deleted records are not permanently removed from the database
-- Records are marked with a `deleted_at` timestamp
-- Deleted records can be viewed and restored when needed
-- Perfect for compliance requirements in banking and financial systems
-
-### 2. **Versioning** (Audit Trail)
-- All customer record updates are tracked with version history
-- Each version stores the previous state before modification
-- Tracks who made the change and when
-- View complete version history for any customer record
-
-### 3. **Activity Logging** (Audit Trail)
-- Comprehensive logging of all user activities:
-  - **Login/Logout:** Track user authentication events
-  - **Create:** Log when new records are created
-  - **Update:** Log when records are modified
-  - **Delete:** Log when records are soft-deleted
-  - **Restore:** Log when deleted records are restored
-- Captures IP address, user agent, timestamp, and user information
-- Essential for security audits and compliance
-
-### 4. **User Authentication**
-- Secure login/logout functionality
-- Session-based authentication
-- Protected routes require authentication
-- Default admin user credentials: `admin` / `admin123`
+- **Runtime:** Node.js
+- **Framework:** Express.js
+- **Database:** SQLite3
+- **View Engine:** EJS
+- **Authentication:** bcrypt, express-session
+- **Testing:** Puppeteer
+- **Logging:** Morgan
 
 ---
 
 ## Installation
 
-1. Clone this repository to your local machine:
+### Prerequisites
 
-```shell
-git clone <your-repository-url>
-```
+- Node.js (v14 or higher)
+- npm (comes with Node.js)
 
-2. Navigate to the project directory:
+### Steps
 
-```shell
+1. **Clone the repository:**
+
+```bash
+git clone https://github.com/YOUR_USERNAME/crud-nodejs-mysql.git
 cd crud-nodejs-mysql
 ```
 
-3. Install the project dependencies:
+2. **Install dependencies:**
 
-```shell
+```bash
 npm install
 ```
 
-4. Set up your MySQL database:
-   - Create a MySQL database
-   - Run the SQL script in `database/db.sql` to create tables
-   - Create a `.env` file in the root directory with your database credentials:
+3. **Start the application:**
 
-```env
-DATABASE_PASSWORD=your_mysql_password
-PORT=3000
-SESSION_SECRET=your-secret-key-change-in-production
-```
-
-5. Run the application:
-
-```shell
+Development mode (with auto-reload):
+```bash
 npm run dev
 ```
 
-Or for production:
-
-```shell
+Production mode:
+```bash
 npm start
 ```
+
+**Note:** The database is automatically initialized on first startup. No manual database setup or configuration files are required.
 
 ---
 
 ## Usage
 
-1. **Access the application** through your web browser at `http://localhost:3000`
+1. **Access the application** at `http://localhost:3000`
+
 2. **Login** with default credentials:
    - Username: `admin`
    - Password: `admin123`
+
 3. **Perform CRUD operations:**
    - Create new customers
    - View active customers
@@ -137,18 +113,37 @@ npm start
    - Delete customers (soft delete)
    - Restore deleted customers
    - View version history for any customer
-   - View activity logs
+   - View comprehensive activity logs
+
+---
+
+## Testing
+
+The project includes automated browser testing using Puppeteer. Run the test suite with:
+
+```bash
+npm test
+```
+
+The test suite will:
+- Start the application server
+- Perform automated browser tests for all CRUD operations
+- Test authentication flow
+- Test soft delete and restore functionality
+- Clean up and shut down the server automatically
 
 ---
 
 ## API Endpoints
 
 ### Authentication
+
 - `GET /login` - Display login page
 - `POST /login` - Authenticate user
 - `GET /logout` - Logout user
 
 ### Customer Management
+
 - `GET /` - List all active customers (requires authentication)
 - `POST /add` - Create a new customer (requires authentication)
 - `GET /update/:id` - Display edit form for a customer (requires authentication)
@@ -156,6 +151,7 @@ npm start
 - `GET /delete/:id` - Soft delete a customer (requires authentication)
 
 ### Additional Features
+
 - `GET /deleted` - View all soft-deleted customers (requires authentication)
 - `GET /restore/:id` - Restore a soft-deleted customer (requires authentication)
 - `GET /versions/:id` - View version history for a customer (requires authentication)
@@ -168,16 +164,92 @@ npm start
 ### Tables
 
 1. **users** - User authentication
-   - `id`, `username`, `password`, `email`, `created_at`
+   - `id` - Primary key
+   - `username` - Unique username
+   - `password` - Bcrypt hashed password
+   - `email` - User email (optional)
+   - `created_at` - Account creation timestamp
 
 2. **customer** - Customer records with soft delete support
-   - `id`, `name`, `address`, `phone`, `deleted_at`, `created_at`, `updated_at`
+   - `id` - Primary key
+   - `name` - Customer name
+   - `address` - Customer address
+   - `phone` - Customer phone number
+   - `deleted_at` - Soft delete timestamp (NULL for active records)
+   - `created_at` - Record creation timestamp
+   - `updated_at` - Last update timestamp
 
 3. **customer_versions** - Version history for customer records
-   - `id`, `customer_id`, `name`, `address`, `phone`, `version_number`, `changed_by`, `changed_at`
+   - `id` - Primary key
+   - `customer_id` - Foreign key to customer table
+   - `name` - Customer name at time of change
+   - `address` - Customer address at time of change
+   - `phone` - Customer phone at time of change
+   - `version_number` - Sequential version number
+   - `changed_by` - Username who made the change
+   - `changed_at` - Timestamp of the change
 
 4. **activity_log** - Activity logging for audit trail
-   - `id`, `user_id`, `activity_type`, `activity_description`, `table_name`, `record_id`, `ip_address`, `user_agent`, `created_at`
+   - `id` - Primary key
+   - `user_id` - Foreign key to users table
+   - `activity_type` - Type of activity (LOGIN, LOGOUT, CREATE, UPDATE, DELETE, RESTORE)
+   - `activity_description` - Human-readable description
+   - `table_name` - Table affected
+   - `record_id` - ID of the affected record
+   - `ip_address` - User's IP address
+   - `user_agent` - User's browser/user agent
+   - `created_at` - Timestamp of the activity
+
+---
+
+## Project Structure
+
+```
+crud-nodejs-mysql/
+├── database/
+│   ├── db.sql              # Database schema definition
+│   └── crudnodejsmysql.db  # SQLite database file (auto-generated)
+├── src/
+│   ├── app.js              # Main application entry point
+│   ├── controllers/
+│   │   ├── authController.js    # Authentication logic
+│   │   └── customerController.js # Customer CRUD operations
+│   ├── middleware/
+│   │   ├── auth.js        # Authentication middleware
+│   │   └── database.js    # Database connection and initialization
+│   ├── routes/
+│   │   └── customer.js    # Customer routes
+│   ├── utils/
+│   │   ├── activityLogger.js # Activity logging utility
+│   │   ├── initDb.js      # Database initialization utility
+│   │   └── versioning.js  # Version tracking utility
+│   └── views/
+│       ├── login.ejs
+│       ├── customers.ejs
+│       ├── customer_edit.ejs
+│       ├── customers_deleted.ejs
+│       ├── customer_versions.ejs
+│       ├── activity_log.ejs
+│       └── partials/
+│           ├── _header.ejs
+│           └── _footer.ejs
+├── test/
+│   └── browser-test.js    # Puppeteer browser automation tests
+├── package.json
+├── README.md
+├── CHANGE_REQUEST.md      # Change request documentation
+└── MAINTENANCE.md         # Maintenance documentation
+```
+
+---
+
+## Security Features
+
+- **Password Hashing:** Passwords are hashed using bcrypt with salt rounds
+- **Session Management:** Secure session handling with express-session
+- **Protected Routes:** All customer management routes require authentication
+- **SQL Injection Prevention:** Parameterized queries prevent SQL injection attacks
+- **Input Validation:** User input is validated before database operations
 
 ---
 
