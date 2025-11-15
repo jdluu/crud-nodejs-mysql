@@ -72,55 +72,35 @@
 
 ### Activities Not Performed
 
-1. **Automated Unit Testing**
+1. **Automated Testing**
    - **Reason:** Time constraints and project scope focused on feature implementation
    - **Impact:** Low - Manual testing was performed comprehensively
-   - **Recommendation:** Implement Jest/Mocha tests for future iterations
+   - **Recommendation:** Implement Jest/Mocha tests for future iterations, Add Supertest for API endpoint testing
 
-2. **Automated Integration Testing**
-   - **Reason:** Project scope and resources focused on functionality over test automation
-   - **Impact:** Medium - Manual integration testing was done
-   - **Recommendation:** Add Supertest for API endpoint testing
-
-3. **Performance Testing**
+2. **Performance Testing**
    - **Reason:** Not a requirement for this enhancement phase
    - **Impact:** Low - Application handles expected load
    - **Recommendation:** Conduct load testing if user base grows significantly
 
-4. **Security Penetration Testing**
+3. **Security Penetration Testing**
    - **Reason:** Limited to basic authentication implementation
    - **Impact:** Medium - Basic security implemented but not thoroughly tested
    - **Recommendation:** Conduct security audit before production deployment
 
-5. **Regression Testing (Automated)**
-   - **Reason:** Manual regression testing performed instead
-   - **Impact:** Low - All original functionality verified manually
-   - **Recommendation:** Implement automated regression test suite
-
-6. **Code Coverage Analysis**
+4. **Code Coverage Analysis**
    - **Reason:** No automated test suite implemented
    - **Impact:** Low - Manual testing covered all critical paths
    - **Recommendation:** Add coverage tools when automated tests are implemented
 
-7. **Database Migration Scripts**
+5. **Database Migration Scripts**
    - **Reason:** Manual SQL script provided instead
    - **Impact:** Low - Schema changes documented in db.sql
    - **Recommendation:** Create migration scripts for production environments
 
-8. **CI/CD Pipeline Setup**
+6. **CI/CD Pipeline Setup**
    - **Reason:** Not part of enhancement requirements
    - **Impact:** Low - Manual deployment sufficient for current scope
    - **Recommendation:** Implement CI/CD for continuous integration
-
-9. **Accessibility Testing**
-   - **Reason:** Focus on functionality over accessibility compliance
-   - **Impact:** Medium - UI may not meet WCAG standards
-   - **Recommendation:** Conduct accessibility audit for compliance
-
-10. **Multi-browser Testing**
-    - **Reason:** Tested primarily in development environment
-    - **Impact:** Low - Bootstrap ensures cross-browser compatibility
-    - **Recommendation:** Test on Chrome, Firefox, Safari, Edge before production
 
 ---
 
