@@ -72,7 +72,7 @@ The application automatically initializes the database on first startup, making 
 1. **Clone the repository:**
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/crud-nodejs-mysql.git
+git clone https://github.com/jdluu/crud-nodejs-mysql.git
 cd crud-nodejs-mysql
 ```
 
@@ -237,8 +237,6 @@ crud-nodejs-mysql/
 │   └── browser-test.js    # Puppeteer browser automation tests
 ├── package.json
 ├── README.md
-├── CHANGE_REQUEST.md      # Change request documentation
-└── MAINTENANCE.md         # Maintenance documentation
 ```
 
 ---
