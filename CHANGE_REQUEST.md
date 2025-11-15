@@ -4,27 +4,37 @@
 
 ## Change Description
 
+<div style="border: 1px solid black; padding: 8px; margin-bottom: 10px;">
+
 | Project Name: | Change Name: | Number: |
 |:--------------|:-------------|:--------|
-| CRUD Node.js MySQL Application | Enhance CRUD Application with Soft Delete, Versioning, and Activity Logging | CR-001 |
+| CRUD Node.js MySQL Application | Soft Delete, Versioning, and Activity Logging | CR-001 |
+
+</div>
+
+<div style="border: 1px solid black; padding: 8px; margin-bottom: 10px;">
 
 | Requested By: | Contact: | Date: |
 |:--------------|:---------|:------|
 | Jeffrey Luu | [Contact Information] | 2025-11-04 |
 
+</div>
+
 **Description of Change:**
 
-The user requires enhancements to the existing CRUD application to include:
+<div style="border: 1px solid black; padding: 10px; min-height: 80px; margin-bottom: 15px;">
 
 1. **Soft delete functionality** - Retain deleted records in the database instead of permanently removing them
 2. **Versioning** - Retain modified records with complete version history for audit purposes
 3. **Activity logging** - Track all user activities including login, logout, create, update, delete, and restore operations
 
-These enhancements will provide comprehensive audit trails and data retention capabilities required for compliance in banking systems and social media platforms.
+</div>
 
 **Reason for Change:**
 
-These features are essential for applications in banking systems and social media platforms where:
+<div style="border: 1px solid black; padding: 10px; min-height: 80px; margin-bottom: 15px;">
+
+These changes are necessary for applications in banking systems and social media platforms where:
 
 - Data retention is required for compliance and audit purposes
 - Historical data tracking is necessary for accountability
@@ -32,11 +42,15 @@ These features are essential for applications in banking systems and social medi
 - Version history is needed to track changes and maintain data integrity
 - Activity logging provides security monitoring and user accountability
 
-**Priority [Circle One]:** 
+</div>
+
+**Priority [Circle One]:**
 
 1. High ✓    2. Medium    3. Low
 
 **Impact on Deliverables:**
+
+<div style="border: 1px solid black; padding: 10px; min-height: 60px; margin-bottom: 15px;">
 
 The following deliverables are affected by this change:
 
@@ -49,7 +63,11 @@ The following deliverables are affected by this change:
 - **Documentation:** README.md updated with new features and setup instructions
 - **Testing:** Comprehensive browser automation test suite added
 
+</div>
+
 **Impact of Not Responding to Change (and Reason Why):**
+
+<div style="border: 1px solid black; padding: 10px; min-height: 60px; margin-bottom: 15px;">
 
 If this change is not implemented:
 
@@ -59,15 +77,23 @@ If this change is not implemented:
 - **Accountability Issues:** No tracking of who made changes or when, making it difficult to maintain data integrity
 - **Business Impact:** The application cannot be used in environments requiring audit trails and compliance documentation
 
+</div>
+
+<div style="border: 1px solid black; padding: 8px; margin-bottom: 10px;">
+
 | Date Needed: | Approval of Request: | Date: |
 |:-------------|:---------------------|:------|
-| 2025-11-04 | [Approval Status] | [Approval Date] |
+| 2025-11-04 | Pending | 2025-11-14 |
+
+</div>
 
 ---
 
 ## Change Impact
 
 **Tasks/Scope Affected:**
+
+<div style="border: 1px solid black; padding: 10px; min-height: 40px; margin-bottom: 15px;">
 
 | Component | Tasks Affected |
 |:----------|:---------------|
@@ -76,7 +102,11 @@ If this change is not implemented:
 | **Frontend Views** | • Create login page<br>• Create deleted customers view<br>• Create version history view<br>• Create activity log view<br>• Update existing views with new navigation |
 | **Testing** | • Manual testing of all CRUD operations<br>• Browser automation testing with Puppeteer<br>• Integration testing of database operations<br>• End-to-end workflow testing |
 
+</div>
+
 **Cost Evaluation:**
+
+<div style="border: 1px solid black; padding: 10px; min-height: 40px; margin-bottom: 15px;">
 
 | Cost Type | Details |
 |:----------|:--------|
@@ -86,7 +116,11 @@ If this change is not implemented:
 | **Infrastructure** | No additional infrastructure costs - SQLite is file-based, no server required |
 | **Maintenance** | Minimal additional maintenance - well-structured code with proper error handling |
 
+</div>
+
 **Risk Evaluation:**
+
+<div style="border: 1px solid black; padding: 10px; min-height: 40px; margin-bottom: 15px;">
 
 | Risk | Level | Mitigation |
 |:-----|:------|:-----------|
@@ -95,7 +129,11 @@ If this change is not implemented:
 | **Data Loss During Migration** | Low | • Database schema changes are additive<br>• Existing data preserved with default values<br>• Migration scripts tested thoroughly |
 | **Breaking Changes** | Medium | • All routes now require authentication (documented)<br>• Database migration from MySQL to SQLite (documented)<br>• Clear migration path provided |
 
+</div>
+
 **Quality Evaluation:**
+
+<div style="border: 1px solid black; padding: 10px; min-height: 40px; margin-bottom: 15px;">
 
 | Quality Aspect | Assessment |
 |:---------------|:-----------|
@@ -104,7 +142,11 @@ If this change is not implemented:
 | **Documentation** | • Updated README with new features<br>• Inline code comments<br>• Change request documentation |
 | **Security** | • Password hashing with bcrypt<br>• Session management<br>• Route protection<br>• Activity logging for audit trails |
 
+</div>
+
 **Additional Resources:**
+
+<div style="border: 1px solid black; padding: 10px; min-height: 40px; margin-bottom: 15px;">
 
 | Resource Type | Requirements |
 |:--------------|:-------------|
@@ -113,7 +155,11 @@ If this change is not implemented:
 | **Documentation** | • Markdown editor for documentation updates |
 | **No Additional Resources** | All required tools and dependencies are already available or can be installed via npm |
 
+</div>
+
 **Duration:**
+
+<div style="border: 1px solid black; padding: 10px; min-height: 40px; margin-bottom: 15px;">
 
 | Phase | Duration |
 |:------|:---------|
@@ -124,17 +170,24 @@ If this change is not implemented:
 | **Documentation** | 1 hour |
 | **Total Estimated Duration** | 11-14 hours |
 
+</div>
+
 **Additional Effort:**
+
+<div style="border: 1px solid black; padding: 10px; min-height: 40px; margin-bottom: 15px;">
 
 | Activity | Effort Required |
 |:---------|:----------------|
-| **Learning SQLite Syntax** | Minimal - similar to MySQL |
 | **Implementing Authentication** | Moderate - standard Express.js patterns |
 | **Versioning System** | Moderate - requires careful state management |
 | **Activity Logging** | Low - straightforward logging implementation |
 | **Testing** | Moderate - comprehensive test suite development |
 
+</div>
+
 **Impact on Deadline:**
+
+<div style="border: 1px solid black; padding: 10px; min-height: 40px; margin-bottom: 15px;">
 
 | Impact | Details |
 |:-------|:--------|
@@ -142,7 +195,11 @@ If this change is not implemented:
 | **Development Schedule** | Can be completed within 1-2 days of focused development |
 | **Deployment** | No deployment delays - changes are backward compatible where possible |
 
+</div>
+
 **Alternative and Recommendations:**
+
+<div style="border: 1px solid black; padding: 10px; min-height: 40px; margin-bottom: 15px;">
 
 | Alternative | Evaluation |
 |:------------|:-----------|
@@ -151,7 +208,11 @@ If this change is not implemented:
 | **Basic Logging Only** | Not recommended - comprehensive activity logging is required for security and compliance |
 | **Recommended Approach** | Implement all three features (soft delete, versioning, activity logging) as they work together to provide complete audit trail and compliance capabilities |
 
+</div>
+
 **Comments:**
+
+<div style="border: 1px solid black; padding: 10px; min-height: 40px; margin-bottom: 15px;">
 
 - Default admin credentials: `admin` / `admin123` (should be changed in production)
 - Password hashing with bcrypt is implemented and active - passwords are securely hashed
@@ -164,9 +225,13 @@ If this change is not implemented:
 - Original repository reference: [https://github.com/TadeopCreator/crud-nodejs-mysql](https://github.com/TadeopCreator/crud-nodejs-mysql)
 - All changes have been tested and verified to work correctly
 
+</div>
+
 ---
 
 ## Sign Offs
+
+<div style="border: 1px solid black; padding: 10px; margin-bottom: 15px;">
 
 | Role | Name | Date | Signature |
 |:-----|:-----|:-----|:----------|
@@ -174,106 +239,4 @@ If this change is not implemented:
 | **Reviewed By** | _________________ | _______________ | _________________ |
 | **Approved By** | _________________ | _______________ | _________________ |
 
----
-
-## Technical Details (Reference)
-
-### Database Schema Changes
-
-#### New Tables Created
-
-| Table Name | Description |
-|:-----------|:------------|
-| `users` | User authentication table |
-| `customer_versions` | Version history table |
-| `activity_log` | Activity logging table |
-
-#### Modified Tables
-
-| Table Name | Changes |
-|:-----------|:--------|
-| `customer` | Added `deleted_at`, `created_at`, `updated_at` columns |
-
-### Code Changes
-
-#### New Files Created
-
-| File Path | Description |
-|:----------|:------------|
-| `src/middleware/auth.js` | Authentication middleware |
-| `src/middleware/database.js` | SQLite database connection middleware |
-| `src/utils/activityLogger.js` | Activity logging utility |
-| `src/utils/versioning.js` | Versioning utility |
-| `src/utils/initDb.js` | Database initialization utility |
-| `src/controllers/authController.js` | Authentication controller |
-| `src/views/login.ejs` | Login page |
-| `src/views/customers_deleted.ejs` | Deleted customers view |
-| `src/views/customer_versions.ejs` | Version history view |
-| `src/views/activity_log.ejs` | Activity log view |
-
-#### Modified Files
-
-| File Path | Changes |
-|:----------|:--------|
-| `src/app.js` | Added session management, replaced MySQL with SQLite database middleware, improved database initialization handling |
-| `src/controllers/customerController.js` | Implemented soft delete, versioning, logging, improved error handling |
-| `src/routes/customer.js` | Added authentication routes and new endpoints |
-| `src/views/customers.ejs` | Added navigation to new features |
-| `src/views/customer_edit.ejs` | Added version history link |
-| `database/db.sql` | Updated schema with new tables, converted from MySQL to SQLite syntax, added bcrypt password hash for admin user |
-| `package.json` | Added bcrypt and express-session dependencies, replaced mysql with sqlite3, added puppeteer for testing |
-| `README.md` | Updated documentation |
-| `test/browser-test.js` | Added comprehensive browser automation test suite |
-
-### Dependencies
-
-#### Dependencies Added
-
-| Package | Version | Purpose |
-|:--------|:--------|:--------|
-| `bcrypt` | ^5.1.1 | Password hashing |
-| `express-session` | ^1.18.1 | Session management |
-| `sqlite3` | ^5.1.7 | SQLite database driver |
-| `puppeteer` | ^24.28.0 | Browser automation for testing (dev dependency) |
-
-#### Dependencies Removed
-
-| Package | Reason |
-|:--------|:-------|
-| `mysql` | Replaced with sqlite3 for local development |
-| `express-myconnection` | No longer needed with SQLite |
-
-### Testing Performed
-
-#### Unit Testing
-
-| Test Case | Status |
-|:----------|:-------|
-| Authentication flow (login/logout) | ✅ Passed |
-| Soft delete functionality | ✅ Passed |
-| Version creation on update | ✅ Passed |
-| Activity logging for all operations | ✅ Passed |
-
-#### Integration Testing
-
-| Test Case | Status |
-|:----------|:-------|
-| Database operations with new schema | ✅ Passed |
-| Session management | ✅ Passed |
-| Route protection | ✅ Passed |
-| Browser automation testing with Puppeteer | ✅ Passed |
-| End-to-end workflow testing | ✅ Passed |
-
-#### Manual Testing
-
-| Test Case | Status |
-|:----------|:-------|
-| Create customer | ✅ Passed |
-| Update customer (verifies versioning) | ✅ Passed |
-| Delete customer (verifies soft delete) | ✅ Passed |
-| Verify deleted items appear in deleted list | ✅ Passed |
-| Restore deleted customer | ✅ Passed |
-| View version history | ✅ Passed |
-| View activity log | ✅ Passed |
-| Login/logout | ✅ Passed |
-| Browser automation test suite | ✅ Passed |
+</div>

@@ -4,7 +4,7 @@
 
 **Maintenance Type:** **Perfective Maintenance** and **Adaptive Maintenance**
 
-### Classification Details:
+### Classification Details
 
 1. **Perfective Maintenance (Primary):**
    - Added new features to improve functionality: soft delete, versioning, and activity logging
@@ -21,7 +21,7 @@
 
 ## Maintenance Activities Performed
 
-### ✅ Activities Completed:
+### Activities Completed
 
 1. **Requirements Analysis**
    - Analyzed original codebase
@@ -70,7 +70,7 @@
 
 ## Activities NOT Performed
 
-### ❌ Activities Not Performed:
+### Activities Not Performed
 
 1. **Automated Unit Testing**
    - **Reason:** Time constraints and project scope focused on feature implementation
@@ -127,121 +127,141 @@
 ## Challenges Faced During Maintenance
 
 ### 1. **Database Schema Migration**
+
    **Challenge:** Modifying existing customer table without breaking existing data
-   
+
    **Solution:**
-   - Used `ALTER TABLE` statements with default NULL values for `deleted_at`
-   - Added indexes for performance
-   - Maintained backward compatibility
+
+- Used `ALTER TABLE` statements with default NULL values for `deleted_at`
+- Added indexes for performance
+- Maintained backward compatibility
 
    **Impact:** Medium - Required careful planning to avoid data loss
 
 ---
 
 ### 2. **Session Management Implementation**
+
    **Challenge:** Integrating session management with existing database connection middleware
-   
+
    **Solution:**
-   - Used `express-session` middleware
-   - Configured session store properly
-   - Ensured session persists across requests
+
+- Used `express-session` middleware
+- Configured session store properly
+- Ensured session persists across requests
 
    **Impact:** Low - Standard Express.js pattern resolved the issue
 
 ---
 
 ### 3. **Activity Logging in Async Context**
+
    **Challenge:** Logging activities while maintaining asynchronous database operations
-   
+
    **Solution:**
-   - Created separate utility function for logging
-   - Used callback pattern to ensure logging doesn't block main operations
-   - Added error handling to prevent logging failures from affecting main flow
+
+- Created separate utility function for logging
+- Used callback pattern to ensure logging doesn't block main operations
+- Added error handling to prevent logging failures from affecting main flow
 
    **Impact:** Medium - Required careful error handling
 
 ---
 
 ### 4. **Version Number Management**
+
    **Challenge:** Determining correct version number when multiple updates occur
-   
+
    **Solution:**
-   - Query for MAX version number before creating new version
-   - Increment version number atomically
-   - Handle edge cases where no versions exist
+
+- Query for MAX version number before creating new version
+- Increment version number atomically
+- Handle edge cases where no versions exist
 
    **Impact:** Low - Solved with proper SQL query
 
 ---
 
 ### 5. **Soft Delete Query Filtering**
+
    **Challenge:** Ensuring deleted records don't appear in main listings without breaking existing queries
-   
+
    **Solution:**
-   - Modified all SELECT queries to filter `WHERE deleted_at IS NULL`
-   - Created separate query for deleted records
-   - Updated all views to use correct queries
+
+- Modified all SELECT queries to filter `WHERE deleted_at IS NULL`
+- Created separate query for deleted records
+- Updated all views to use correct queries
 
    **Impact:** Medium - Required careful modification of all queries
 
 ---
 
 ### 6. **Route Protection**
+
    **Challenge:** Protecting all routes without duplicating authentication checks
-   
+
    **Solution:**
-   - Created authentication middleware
-   - Applied middleware to all protected routes
-   - Redirected unauthenticated users to login page
+
+- Created authentication middleware
+- Applied middleware to all protected routes
+- Redirected unauthenticated users to login page
 
    **Impact:** Low - Standard Express.js middleware pattern
 
 ---
 
 ### 7. **Password Security**
+
    **Challenge:** Implementing secure password hashing while maintaining development usability
-   
+
    **Solution:**
-   - Implemented bcrypt password hashing for admin user
-   - Updated login controller to use bcrypt.compare for password verification
-   - Stored hashed password in database instead of plain text
-   - Maintained development usability with documented credentials
-   
+
+- Implemented bcrypt password hashing for admin user
+- Updated login controller to use bcrypt.compare for password verification
+- Stored hashed password in database instead of plain text
+- Maintained development usability with documented credentials
+
    **Impact:** Low - Security significantly improved with proper hashing implementation
 
 ---
 
 ### 8. **Version History Display**
+
    **Challenge:** Displaying version history in a user-friendly format
-   
+
    **Solution:**
-   - Created dedicated view for version history
-   - Joined with users table to show who made changes
-   - Formatted timestamps for readability
+
+- Created dedicated view for version history
+- Joined with users table to show who made changes
+- Formatted timestamps for readability
 
    **Impact:** Low - Standard EJS templating resolved the issue
 
 ---
 
 ### 9. **Activity Log Performance**
+
    **Challenge:** Preventing activity log from growing unbounded and affecting performance
-   
+
    **Solution:**
-   - Limited display to 100 most recent entries
-   - Added indexes on frequently queried columns
-   - Documented recommendation for log rotation/archival
+
+- Limited display to 100 most recent entries
+- Added indexes on frequently queried columns
+- Documented recommendation for log rotation/archival
 
    **Impact:** Low - Managed with query limits and indexes
 
 ---
 
 ### 10. **Original Repository Tracking**
+
    **Challenge:** Ensuring original repository is properly credited while tracking new changes
-   
+
    **Solution:**
-   - Added clear note in README.md referencing original repository
-   - Documented all enhancements separately
-   - Maintained MIT license from original project
+
+- Added clear note in README.md referencing original repository
+- Documented all enhancements separately
+- Maintained MIT license from original project
 
    **Impact:** Low - Documentation resolved the issue
 
@@ -255,7 +275,6 @@
    - Create test database for automated testing
 
 2. **Security:**
-   - ✅ Password hashing with bcrypt (implemented)
    - Add CSRF protection
    - Implement rate limiting for login attempts
    - Use HTTPS in production
@@ -297,10 +316,8 @@
 ## Conclusion
 
 The maintenance was successfully completed with all required features implemented:
-- ✅ Soft delete functionality
-- ✅ Versioning system
-- ✅ Activity logging
-- ✅ User authentication
 
-The application is now ready for use in environments requiring data retention and audit trails, such as banking systems and social media platforms.
-
+- Soft delete functionality
+- Versioning system
+- Activity logging
+- User authentication
