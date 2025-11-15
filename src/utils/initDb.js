@@ -3,7 +3,7 @@ const path = require('path');
 
 // Initialize database
 function initializeDatabase() {
-    const dbPath = path.join(__dirname, 'database', 'crudnodejsmysql.db');
+    const dbPath = path.join(__dirname, '..', '..', 'database', 'crudnodejsmysql.db');
     const db = new Database(dbPath);
     
     // Enable foreign keys
@@ -11,7 +11,7 @@ function initializeDatabase() {
     
     // Read and execute SQL file
     const fs = require('fs');
-    const sqlPath = path.join(__dirname, 'database', 'db.sql');
+    const sqlPath = path.join(__dirname, '..', '..', 'database', 'db.sql');
     const sql = fs.readFileSync(sqlPath, 'utf8');
     
     // Execute SQL statements
