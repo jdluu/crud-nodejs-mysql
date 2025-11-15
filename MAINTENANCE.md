@@ -2,302 +2,204 @@
 
 ## Type of Maintenance
 
-**Maintenance Type:** **Perfective Maintenance** and **Adaptive Maintenance**
+**Maintenance Type:** **Perfective** (Primary) and **Adaptive** (Secondary)
 
 ### Classification Details
 
-1. **Perfective Maintenance (Primary):**
-   - Added new features to improve functionality: soft delete, versioning, and activity logging
-   - Enhanced existing CRUD operations with audit capabilities
-   - Improved data retention and compliance features
-   - Added authentication system for better security
+1. **Perfective Maintenance:**
 
-2. **Adaptive Maintenance (Secondary):**
-   - Modified the application to meet new requirements (banking/social media use cases)
-   - Adapted database schema to support new features
-   - Enhanced the application to comply with data retention requirements
+   * Added soft delete, versioning, and activity logging
+   * Enhanced CRUD operations with auditing
+   * Improved data retention and compliance features
+   * Added authentication system
+
+2. **Adaptive Maintenance:**
+
+   * Updated application to meet new requirements
+   * Modified database schema to support new features
+   * Ensured compliance with data retention needs
 
 ---
 
 ## Maintenance Activities Performed
 
-### Activities Completed
+### 1. Requirements Analysis
 
-1. **Requirements Analysis**
-   - Analyzed original codebase
-   - Identified missing features (soft delete, versioning, logging)
-   - Verified original repository lacks these features
+* Reviewed original codebase
+* Identified missing features (soft delete, versioning, logging)
+* Confirmed the original repository did not include these features
 
-2. **Database Design**
-   - Designed new schema for versioning table
-   - Designed activity log table
-   - Modified customer table for soft delete support
-   - Created users table for authentication
+### 2. Database Design
 
-3. **Code Implementation**
-   - Implemented authentication system (login/logout)
-   - Implemented soft delete functionality
-   - Implemented versioning system
-   - Implemented activity logging
-   - Created middleware for route protection
-   - Updated all controllers and routes
+* Created versioning table
+* Created activity log table
+* Updated customer table for soft delete
+* Added users table for authentication
 
-4. **User Interface Development**
-   - Created login page
-   - Created deleted customers view
-   - Created version history view
-   - Created activity log view
-   - Updated existing views with new features
+### 3. Code Implementation
 
-5. **Testing**
-   - Manual testing of all CRUD operations
-   - Testing of authentication flow
-   - Testing of soft delete and restore
-   - Testing of version history
-   - Testing of activity logging
-   - Integration testing of database operations
-   - Browser automation testing with Puppeteer
-   - End-to-end workflow verification
-   - Soft delete verification testing
+* Implemented authentication (login and logout)
+* Added soft delete
+* Added versioning
+* Added activity logging
+* Created authentication middleware
+* Updated all controllers and routes
 
-6. **Documentation**
-   - Updated README.md with new features
-   - Created change request documentation
-   - Added inline code comments
-   - Documented database schema changes
+### 4. User Interface Development
+
+* Created login page
+* Added views for deleted customers, version history, and activity logs
+* Updated existing views with new features
+
+### 5. Testing
+
+* Manual testing of all CRUD operations
+* Authentication flow testing
+* Soft delete and restore testing
+* Version history testing
+* Activity logging testing
+* Integration testing for database operations
+* Browser automation testing with Puppeteer
+* End-to-end verification
+
+### 6. Documentation
+
+* Updated README.md
+* Created change request documentation
+* Added code comments
+* Documented all schema changes
 
 ---
 
-## Activities NOT Performed
-
-### Activities Not Performed
+## Activities Not Performed
 
 1. **Automated Testing**
-   - **Reason:** Time constraints and project scope focused on feature implementation
-   - **Impact:** Low - Manual testing was performed comprehensively
-   - **Recommendation:** Implement Jest/Mocha tests for future iterations, Add Supertest for API endpoint testing
+
+   * Reason: Time constraints
+   * Impact: Low
+   * Recommendation: Add Jest or Mocha and Supertest
 
 2. **Performance Testing**
-   - **Reason:** Not a requirement for this enhancement phase
-   - **Impact:** Low - Application handles expected load
-   - **Recommendation:** Conduct load testing if user base grows significantly
+
+   * Reason: Not in project scope
+   * Impact: Low
+   * Recommendation: Add load testing if user base grows
 
 3. **Security Penetration Testing**
-   - **Reason:** Limited to basic authentication implementation
-   - **Impact:** Medium - Basic security implemented but not thoroughly tested
-   - **Recommendation:** Conduct security audit before production deployment
+
+   * Reason: Only basic authentication added
+   * Impact: Medium
+   * Recommendation: Conduct full security audit
 
 4. **Code Coverage Analysis**
-   - **Reason:** No automated test suite implemented
-   - **Impact:** Low - Manual testing covered all critical paths
-   - **Recommendation:** Add coverage tools when automated tests are implemented
+
+   * Reason: No automated tests implemented
+   * Impact: Low
+   * Recommendation: Add coverage tools later
 
 5. **Database Migration Scripts**
-   - **Reason:** Manual SQL script provided instead
-   - **Impact:** Low - Schema changes documented in db.sql
-   - **Recommendation:** Create migration scripts for production environments
+
+   * Reason: Manual SQL script used
+   * Impact: Low
+   * Recommendation: Add migration scripts for production
 
 6. **CI/CD Pipeline Setup**
-   - **Reason:** Not part of enhancement requirements
-   - **Impact:** Low - Manual deployment sufficient for current scope
-   - **Recommendation:** Implement CI/CD for continuous integration
+
+   * Reason: Out of scope
+   * Impact: Low
+   * Recommendation: Implement CI/CD in future updates
 
 ---
 
-## Challenges Faced During Maintenance
+## Challenges and Resolutions
 
-### 1. **Database Schema Migration**
+### 1. Database Schema Migration
 
-   **Challenge:** Modifying existing customer table without breaking existing data
+* **Challenge:** Updating customer table without data loss
+* **Solution:** Used ALTER TABLE with safe defaults and indexing
+* **Impact:** Medium
 
-   **Solution:**
+### 2. Session Management
 
-- Used `ALTER TABLE` statements with default NULL values for `deleted_at`
-- Added indexes for performance
-- Maintained backward compatibility
+* **Challenge:** Integrating session handling with existing middleware
+* **Solution:** Implemented express-session with proper configuration
+* **Impact:** Low
 
-   **Impact:** Medium - Required careful planning to avoid data loss
+### 3. Activity Logging in Async Operations
 
----
+* **Challenge:** Ensuring logs do not block main operations
+* **Solution:** Created a dedicated logging utility with error handling
+* **Impact:** Medium
 
-### 2. **Session Management Implementation**
+### 4. Version Number Management
 
-   **Challenge:** Integrating session management with existing database connection middleware
+* **Challenge:** Maintaining correct version sequencing
+* **Solution:** Queried MAX version and incremented atomically
+* **Impact:** Low
 
-   **Solution:**
+### 5. Soft Delete Query Filtering
 
-- Used `express-session` middleware
-- Configured session store properly
-- Ensured session persists across requests
+* **Challenge:** Preventing deleted records from appearing in results
+* **Solution:** Updated queries to exclude soft deleted entries
+* **Impact:** Medium
 
-   **Impact:** Low - Standard Express.js pattern resolved the issue
+### 6. Route Protection
 
----
+* **Challenge:** Securing routes without duplicating authentication logic
+* **Solution:** Implemented authentication middleware
+* **Impact:** Low
 
-### 3. **Activity Logging in Async Context**
+### 7. Password Security
 
-   **Challenge:** Logging activities while maintaining asynchronous database operations
+* **Challenge:** Introducing secure password hashing
+* **Solution:** Implemented bcrypt, updated login logic, and stored hashed passwords
+* **Impact:** Low
 
-   **Solution:**
+### 8. Version History Display
 
-- Created separate utility function for logging
-- Used callback pattern to ensure logging doesn't block main operations
-- Added error handling to prevent logging failures from affecting main flow
+* **Challenge:** Presenting version history clearly
+* **Solution:** Created dedicated view with user attribution
+* **Impact:** Low
 
-   **Impact:** Medium - Required careful error handling
+### 9. Activity Log Performance
 
----
+* **Challenge:** Preventing unbounded log growth
+* **Solution:** Limited query results and added indexes
+* **Impact:** Low
 
-### 4. **Version Number Management**
+### 10. Original Repository Tracking
 
-   **Challenge:** Determining correct version number when multiple updates occur
-
-   **Solution:**
-
-- Query for MAX version number before creating new version
-- Increment version number atomically
-- Handle edge cases where no versions exist
-
-   **Impact:** Low - Solved with proper SQL query
-
----
-
-### 5. **Soft Delete Query Filtering**
-
-   **Challenge:** Ensuring deleted records don't appear in main listings without breaking existing queries
-
-   **Solution:**
-
-- Modified all SELECT queries to filter `WHERE deleted_at IS NULL`
-- Created separate query for deleted records
-- Updated all views to use correct queries
-
-   **Impact:** Medium - Required careful modification of all queries
-
----
-
-### 6. **Route Protection**
-
-   **Challenge:** Protecting all routes without duplicating authentication checks
-
-   **Solution:**
-
-- Created authentication middleware
-- Applied middleware to all protected routes
-- Redirected unauthenticated users to login page
-
-   **Impact:** Low - Standard Express.js middleware pattern
-
----
-
-### 7. **Password Security**
-
-   **Challenge:** Implementing secure password hashing while maintaining development usability
-
-   **Solution:**
-
-- Implemented bcrypt password hashing for admin user
-- Updated login controller to use bcrypt.compare for password verification
-- Stored hashed password in database instead of plain text
-- Maintained development usability with documented credentials
-
-   **Impact:** Low - Security significantly improved with proper hashing implementation
-
----
-
-### 8. **Version History Display**
-
-   **Challenge:** Displaying version history in a user-friendly format
-
-   **Solution:**
-
-- Created dedicated view for version history
-- Joined with users table to show who made changes
-- Formatted timestamps for readability
-
-   **Impact:** Low - Standard EJS templating resolved the issue
-
----
-
-### 9. **Activity Log Performance**
-
-   **Challenge:** Preventing activity log from growing unbounded and affecting performance
-
-   **Solution:**
-
-- Limited display to 100 most recent entries
-- Added indexes on frequently queried columns
-- Documented recommendation for log rotation/archival
-
-   **Impact:** Low - Managed with query limits and indexes
-
----
-
-### 10. **Original Repository Tracking**
-
-   **Challenge:** Ensuring original repository is properly credited while tracking new changes
-
-   **Solution:**
-
-- Added clear note in README.md referencing original repository
-- Documented all enhancements separately
-- Maintained MIT license from original project
-
-   **Impact:** Low - Documentation resolved the issue
+* **Challenge:** Maintaining proper attribution
+* **Solution:** Documented original repository in README.md
+* **Impact:** Low
 
 ---
 
 ## Recommendations for Future Maintenance
 
-1. **Testing:**
-   - Implement automated unit tests
-   - Add integration tests for API endpoints
-   - Create test database for automated testing
-
-2. **Security:**
-   - Add CSRF protection
-   - Implement rate limiting for login attempts
-   - Use HTTPS in production
-   - Change session secret to secure random value
-
-3. **Performance:**
-   - Add database connection pooling optimization
-   - Implement caching for frequently accessed data
-   - Add pagination for activity logs and version history
-
-4. **Monitoring:**
-   - Add error logging system
-   - Implement health check endpoints
-   - Add monitoring for activity log growth
-
-5. **Documentation:**
-   - Create API documentation (Swagger/OpenAPI)
-   - Add deployment guide
-   - Create user manual for end users
+* Implement automated unit and integration tests
+* Enhance security with CSRF protection, rate limiting, and HTTPS
+* Improve performance with connection pooling, caching, and pagination
+* Add monitoring for errors, health checks, and log growth
+* Expand documentation with API specifications, deployment guide, and user documentation
 
 ---
 
 ## Maintenance Summary
 
-**Total Lines of Code Added:** ~1000+ lines  
-**Files Created:** 9 new files  
-**Files Modified:** 8 existing files  
-**Database Tables Added:** 3 new tables  
-**Database Tables Modified:** 1 existing table  
-**Dependencies Added:** 3 new packages (bcrypt, express-session, puppeteer)  
-**Test Files:** Browser automation test suite added  
-
-**Time Spent:** Estimated 8-12 hours  
-**Complexity:** Medium-High  
-**Risk Level:** Low-Medium (due to database changes)
+* Lines of Code Added: approximately 1000
+* New Files: 9
+* Modified Files: 8
+* New Tables: 3
+* Modified Tables: 1
+* New Dependencies: bcrypt, express-session, puppeteer
+* Test Files: Browser automation suite
+* Time Spent: 8 to 12 hours
+* Complexity: Medium to high
+* Risk Level: Low to medium
 
 ---
 
 ## Conclusion
 
-The maintenance was successfully completed with all required features implemented:
-
-- Soft delete functionality
-- Versioning system
-- Activity logging
-- User authentication
+All required features were successfully implemented, including soft delete, versioning, activity logging, and user authentication.
